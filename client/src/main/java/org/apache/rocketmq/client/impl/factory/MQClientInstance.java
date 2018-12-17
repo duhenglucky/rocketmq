@@ -239,7 +239,7 @@ public class MQClientInstance {
                     // Start rebalance service
                     this.rebalanceService.start();
                     // Start push service
-                    this.defaultMQProducer.getDefaultMQProducerImpl().start(false);
+                    this.defaultMQProducer.start(false);
                     log.info("the client factory [{}] start OK", this.clientId);
                     this.serviceState = ServiceState.RUNNING;
                     break;
@@ -823,7 +823,7 @@ public class MQClientInstance {
                 case CREATE_JUST:
                     break;
                 case RUNNING:
-                    this.defaultMQProducer.getDefaultMQProducerImpl().shutdown(false);
+                    this.defaultMQProducer.shutdown(false);
 
                     this.serviceState = ServiceState.SHUTDOWN_ALREADY;
                     this.pullMessageService.shutdown(true);

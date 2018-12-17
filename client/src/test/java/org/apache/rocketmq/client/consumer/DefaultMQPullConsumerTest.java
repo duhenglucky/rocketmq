@@ -67,7 +67,7 @@ public class DefaultMQPullConsumerTest {
         pullConsumer = new DefaultMQPullConsumer(consumerGroup);
         pullConsumer.setNamesrvAddr("127.0.0.1:9876");
         pullConsumer.start();
-        PullAPIWrapper pullAPIWrapper = pullConsumer.getDefaultMQPullConsumerImpl().getPullAPIWrapper();
+        PullAPIWrapper pullAPIWrapper = pullConsumer.getPullAPIWrapper();
         Field field = PullAPIWrapper.class.getDeclaredField("mQClientFactory");
         field.setAccessible(true);
         field.set(pullAPIWrapper, mQClientFactory);

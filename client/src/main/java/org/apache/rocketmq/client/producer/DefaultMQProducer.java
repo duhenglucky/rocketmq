@@ -172,6 +172,16 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
         this.defaultMQProducerImpl.start();
     }
 
+    @Override
+    public void start(boolean startFactory) throws MQClientException {
+        this.defaultMQProducerImpl.start(startFactory);
+    }
+
+    @Override
+    public void shutdown(boolean shutdownFactory) {
+        this.defaultMQProducerImpl.shutdown(shutdownFactory);
+    }
+
     /**
      * This method shuts down this producer instance and releases related resources.
      */
@@ -496,7 +506,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @param newTopic topic name
      * @param queueNum topic's queue number
      * @throws MQClientException if there is any client error.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public void createTopic(String key, String newTopic, int queueNum) throws MQClientException {
         createTopic(key, newTopic, queueNum, 0);
@@ -510,7 +522,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @param queueNum topic's queue number
      * @param topicSysFlag topic system flag
      * @throws MQClientException if there is any client error.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public void createTopic(String key, String newTopic, int queueNum, int topicSysFlag) throws MQClientException {
         this.defaultMQProducerImpl.createTopic(key, newTopic, queueNum, topicSysFlag);
@@ -523,7 +537,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @param timestamp from when in milliseconds.
      * @return Consume queue offset.
      * @throws MQClientException if there is any client error.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public long searchOffset(MessageQueue mq, long timestamp) throws MQClientException {
         return this.defaultMQProducerImpl.searchOffset(mq, timestamp);
@@ -535,7 +551,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @param mq Instance of MessageQueue
      * @return maximum offset of the given consume queue.
      * @throws MQClientException if there is any client error.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public long maxOffset(MessageQueue mq) throws MQClientException {
         return this.defaultMQProducerImpl.maxOffset(mq);
@@ -547,7 +565,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @param mq Instance of MessageQueue
      * @return minimum offset of the given message queue.
      * @throws MQClientException if there is any client error.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public long minOffset(MessageQueue mq) throws MQClientException {
         return this.defaultMQProducerImpl.minOffset(mq);
@@ -559,7 +579,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @param mq Instance of MessageQueue
      * @return earliest message store time.
      * @throws MQClientException if there is any client error.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public long earliestMsgStoreTime(MessageQueue mq) throws MQClientException {
         return this.defaultMQProducerImpl.earliestMsgStoreTime(mq);
@@ -574,7 +596,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @throws MQClientException if there is any client error.
      * @throws RemotingException if there is any network-tier error.
      * @throws InterruptedException if the sending thread is interrupted.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public MessageExt viewMessage(
         String offsetMsgId) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
@@ -592,7 +616,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @return QueryResult instance contains matched messages.
      * @throws MQClientException if there is any client error.
      * @throws InterruptedException if the thread is interrupted.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public QueryResult queryMessage(String topic, String key, int maxNum, long begin, long end)
         throws MQClientException, InterruptedException {
@@ -609,7 +635,9 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * @throws MQClientException if there is any client error.
      * @throws RemotingException if there is any network-tier error.
      * @throws InterruptedException if the sending thread is interrupted.
+     * This method will be removed in the version 4.5.0
      */
+    @Deprecated
     @Override
     public MessageExt viewMessage(String topic,
         String msgId) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
@@ -657,7 +685,7 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
 
     /**
      * Sets an Executor to be used for executing asynchronous send. If the Executor is not set, {@link
-     * DefaultMQProducerImpl#defaultAsyncSenderExecutor} will be used.
+     * DefaultMQProducerImpl#asyncSenderExecutor} will be used.
      *
      * @param asyncSenderExecutor the instance of Executor
      */
@@ -712,6 +740,8 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
         this.compressMsgBodyOverHowmuch = compressMsgBodyOverHowmuch;
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public DefaultMQProducerImpl getDefaultMQProducerImpl() {
         return defaultMQProducerImpl;
     }

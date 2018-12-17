@@ -25,6 +25,7 @@ import org.apache.rocketmq.client.consumer.store.OffsetStore;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.impl.consumer.DefaultMQPullConsumerImpl;
+import org.apache.rocketmq.client.impl.consumer.PullAPIWrapper;
 import org.apache.rocketmq.common.MixAll;
 import org.apache.rocketmq.common.message.MessageDecoder;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -102,42 +103,58 @@ public class DefaultMQPullConsumer extends ClientConfig implements MQPullConsume
         this(MixAll.DEFAULT_CONSUMER_GROUP, rpcHook);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public void createTopic(String key, String newTopic, int queueNum) throws MQClientException {
         createTopic(key, newTopic, queueNum, 0);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public void createTopic(String key, String newTopic, int queueNum, int topicSysFlag) throws MQClientException {
         this.defaultMQPullConsumerImpl.createTopic(key, newTopic, queueNum, topicSysFlag);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long searchOffset(MessageQueue mq, long timestamp) throws MQClientException {
         return this.defaultMQPullConsumerImpl.searchOffset(mq, timestamp);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long maxOffset(MessageQueue mq) throws MQClientException {
         return this.defaultMQPullConsumerImpl.maxOffset(mq);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long minOffset(MessageQueue mq) throws MQClientException {
         return this.defaultMQPullConsumerImpl.minOffset(mq);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long earliestMsgStoreTime(MessageQueue mq) throws MQClientException {
         return this.defaultMQPullConsumerImpl.earliestMsgStoreTime(mq);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public MessageExt viewMessage(String offsetMsgId) throws RemotingException, MQBrokerException,
         InterruptedException, MQClientException {
         return this.defaultMQPullConsumerImpl.viewMessage(offsetMsgId);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public QueryResult queryMessage(String topic, String key, int maxNum, long begin, long end)
         throws MQClientException, InterruptedException {
@@ -156,6 +173,8 @@ public class DefaultMQPullConsumer extends ClientConfig implements MQPullConsume
         return brokerSuspendMaxTimeMillis;
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public void setBrokerSuspendMaxTimeMillis(long brokerSuspendMaxTimeMillis) {
         this.brokerSuspendMaxTimeMillis = brokerSuspendMaxTimeMillis;
     }
@@ -324,6 +343,15 @@ public class DefaultMQPullConsumer extends ClientConfig implements MQPullConsume
         return this.defaultMQPullConsumerImpl.fetchMessageQueuesInBalance(topic);
     }
 
+    public void persistAll(Set<MessageQueue> messageQueues){
+        this.defaultMQPullConsumerImpl.getOffsetStore().persistAll(messageQueues);
+    }
+
+    public PullAPIWrapper getPullAPIWrapper(){
+        return this.defaultMQPullConsumerImpl.getPullAPIWrapper();
+    }
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public MessageExt viewMessage(String topic,
         String uniqKey) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
@@ -342,14 +370,21 @@ public class DefaultMQPullConsumer extends ClientConfig implements MQPullConsume
         this.defaultMQPullConsumerImpl.sendMessageBack(msg, delayLevel, brokerName, consumerGroup);
     }
 
-    public OffsetStore getOffsetStore() {
+
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
+    protected OffsetStore getOffsetStore() {
         return offsetStore;
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public void setOffsetStore(OffsetStore offsetStore) {
         this.offsetStore = offsetStore;
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public DefaultMQPullConsumerImpl getDefaultMQPullConsumerImpl() {
         return defaultMQPullConsumerImpl;
     }

@@ -92,17 +92,15 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
      * <ul>
      * <li>
      * <code>CONSUME_FROM_LAST_OFFSET</code>: consumer clients pick up where it stopped previously.
-     * If it were a newly booting up consumer client, according aging of the consumer group, there are two
-     * cases:
+     * If it were a newly booting up consumer client, according aging of the consumer group, there are two cases:
      * <ol>
      * <li>
-     * if the consumer group is created so recently that the earliest message being subscribed has yet
-     * expired, which means the consumer group represents a lately launched business, consuming will
-     * start from the very beginning;
+     * if the consumer group is created so recently that the earliest message being subscribed has yet expired, which
+     * means the consumer group represents a lately launched business, consuming will start from the very beginning;
      * </li>
      * <li>
-     * if the earliest message being subscribed has expired, consuming will start from the latest
-     * messages, meaning messages born prior to the booting timestamp would be ignored.
+     * if the earliest message being subscribed has expired, consuming will start from the latest messages, meaning
+     * messages born prior to the booting timestamp would be ignored.
      * </li>
      * </ol>
      * </li>
@@ -118,10 +116,8 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
     private ConsumeFromWhere consumeFromWhere = ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET;
 
     /**
-     * Backtracking consumption time with second precision. Time format is
-     * 20131223171201<br>
-     * Implying Seventeen twelve and 01 seconds on December 23, 2013 year<br>
-     * Default backtracking consumption time Half an hour ago.
+     * Backtracking consumption time with second precision. Time format is 20131223171201<br> Implying Seventeen twelve
+     * and 01 seconds on December 23, 2013 year<br> Default backtracking consumption time Half an hour ago.
      */
     private String consumeTimestamp = UtilAll.timeMillisToHumanString3(System.currentTimeMillis() - (1000 * 60 * 30));
 
@@ -153,7 +149,7 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
     /**
      * Max consumer thread number
      */
-    private int consumeThreadMax = 64;
+    private int consumeThreadMax = 20;
 
     /**
      * Threshold for dynamic adjustment of the number of thread pool
@@ -166,8 +162,8 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
     private int consumeConcurrentlyMaxSpan = 2000;
 
     /**
-     * Flow control threshold on queue level, each message queue will cache at most 1000 messages by default,
-     * Consider the {@code pullBatchSize}, the instantaneous value may exceed the limit
+     * Flow control threshold on queue level, each message queue will cache at most 1000 messages by default, Consider
+     * the {@code pullBatchSize}, the instantaneous value may exceed the limit
      */
     private int pullThresholdForQueue = 1000;
 
@@ -183,24 +179,24 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
     /**
      * Flow control threshold on topic level, default value is -1(Unlimited)
      * <p>
-     * The value of {@code pullThresholdForQueue} will be overwrote and calculated based on
-     * {@code pullThresholdForTopic} if it is't unlimited
+     * The value of {@code pullThresholdForQueue} will be overwrote and calculated based on {@code
+     * pullThresholdForTopic} if it is't unlimited
      * <p>
      * For example, if the value of pullThresholdForTopic is 1000 and 10 message queues are assigned to this consumer,
      * then pullThresholdForQueue will be set to 100
      */
-    private int pullThresholdForTopic = -1;
+    private int pullThresholdForTopic = 64;
 
     /**
      * Limit the cached message size on topic level, default value is -1 MiB(Unlimited)
      * <p>
-     * The value of {@code pullThresholdSizeForQueue} will be overwrote and calculated based on
-     * {@code pullThresholdSizeForTopic} if it is't unlimited
+     * The value of {@code pullThresholdSizeForQueue} will be overwrote and calculated based on {@code
+     * pullThresholdSizeForTopic} if it is't unlimited
      * <p>
-     * For example, if the value of pullThresholdSizeForTopic is 1000 MiB and 10 message queues are
-     * assigned to this consumer, then pullThresholdSizeForQueue will be set to 100 MiB
+     * For example, if the value of pullThresholdSizeForTopic is 1000 MiB and 10 message queues are assigned to this
+     * consumer, then pullThresholdSizeForQueue will be set to 100 MiB
      */
-    private int pullThresholdSizeForTopic = -1;
+    private int pullThresholdSizeForTopic = 64;
 
     /**
      * Message pull Interval
@@ -285,48 +281,66 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
         this(consumerGroup, null, new AllocateMessageQueueAveragely());
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public void createTopic(String key, String newTopic, int queueNum) throws MQClientException {
         createTopic(key, newTopic, queueNum, 0);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public void createTopic(String key, String newTopic, int queueNum, int topicSysFlag) throws MQClientException {
         this.defaultMQPushConsumerImpl.createTopic(key, newTopic, queueNum, topicSysFlag);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long searchOffset(MessageQueue mq, long timestamp) throws MQClientException {
         return this.defaultMQPushConsumerImpl.searchOffset(mq, timestamp);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long maxOffset(MessageQueue mq) throws MQClientException {
         return this.defaultMQPushConsumerImpl.maxOffset(mq);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long minOffset(MessageQueue mq) throws MQClientException {
         return this.defaultMQPushConsumerImpl.minOffset(mq);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public long earliestMsgStoreTime(MessageQueue mq) throws MQClientException {
         return this.defaultMQPushConsumerImpl.earliestMsgStoreTime(mq);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public MessageExt viewMessage(
         String offsetMsgId) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
         return this.defaultMQPushConsumerImpl.viewMessage(offsetMsgId);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public QueryResult queryMessage(String topic, String key, int maxNum, long begin, long end)
         throws MQClientException, InterruptedException {
         return this.defaultMQPushConsumerImpl.queryMessage(topic, key, maxNum, begin, end);
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     @Override
     public MessageExt viewMessage(String topic,
         String msgId) throws RemotingException, MQBrokerException, InterruptedException, MQClientException {
@@ -395,6 +409,8 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
         this.consumeThreadMin = consumeThreadMin;
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public DefaultMQPushConsumerImpl getDefaultMQPushConsumerImpl() {
         return defaultMQPushConsumerImpl;
     }
@@ -467,6 +483,8 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
         return subscription;
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public void setSubscription(Map<String, String> subscription) {
         this.subscription = subscription;
     }
@@ -561,8 +579,8 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
      * Subscribe a topic to consuming subscription.
      *
      * @param topic topic to subscribe.
-     * @param subExpression subscription expression.it only support or operation such as "tag1 || tag2 || tag3" <br>
-     * if null or * expression,meaning subscribe all
+     * @param subExpression subscription expression.it only support or operation such as "tag1 || tag2 || tag3" <br> if
+     * null or * expression,meaning subscribe all
      * @throws MQClientException if there is any client error.
      */
     @Override
@@ -631,13 +649,18 @@ public class DefaultMQPushConsumer extends ClientConfig implements MQPushConsume
         this.defaultMQPushConsumerImpl.resume();
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public OffsetStore getOffsetStore() {
         return offsetStore;
     }
 
+    /* This method will be removed in the version 4.5.0*/
+    @Deprecated
     public void setOffsetStore(OffsetStore offsetStore) {
         this.offsetStore = offsetStore;
     }
+
 
     public String getConsumeTimestamp() {
         return consumeTimestamp;

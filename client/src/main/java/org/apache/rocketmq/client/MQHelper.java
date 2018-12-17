@@ -74,7 +74,7 @@ public class MQHelper {
             throw e;
         } finally {
             if (mqs != null) {
-                consumer.getDefaultMQPullConsumerImpl().getOffsetStore().persistAll(mqs);
+                consumer.persistAll(mqs);
             }
             consumer.shutdown();
         }

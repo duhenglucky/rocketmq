@@ -381,10 +381,6 @@ public class DefaultMQPullConsumerImpl implements MQConsumerInner {
         return false;
     }
 
-    @Override
-    public boolean isUnitMode() {
-        return this.defaultMQPullConsumer.isUnitMode();
-    }
 
     @Override
     public ConsumerRunningInfo consumerRunningInfo() {
@@ -604,9 +600,7 @@ public class DefaultMQPullConsumerImpl implements MQConsumerInner {
                     this.defaultMQPullConsumer.getConsumerGroup(), isUnitMode());
                 this.pullAPIWrapper.registerFilterMessageHook(filterMessageHookList);
 
-                if (this.defaultMQPullConsumer.getOffsetStore() != null) {
-                    this.offsetStore = this.defaultMQPullConsumer.getOffsetStore();
-                } else {
+                if (this.offsetStore == null) {
                     switch (this.defaultMQPullConsumer.getMessageModel()) {
                         case BROADCASTING:
                             this.offsetStore = new LocalFileOffsetStore(this.mQClientFactory, this.defaultMQPullConsumer.getConsumerGroup());
@@ -617,9 +611,7 @@ public class DefaultMQPullConsumerImpl implements MQConsumerInner {
                         default:
                             break;
                     }
-                    this.defaultMQPullConsumer.setOffsetStore(this.offsetStore);
                 }
-
                 this.offsetStore.load();
 
                 boolean registerOK = mQClientFactory.registerConsumer(this.defaultMQPullConsumer.getConsumerGroup(), this);
@@ -646,6 +638,11 @@ public class DefaultMQPullConsumerImpl implements MQConsumerInner {
                 break;
         }
 
+    }
+
+    @Override
+    public boolean isUnitMode() {
+        return false;
     }
 
     private void checkConfig() throws MQClientException {
