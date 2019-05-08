@@ -19,6 +19,14 @@ before_install:
   - echo 'MAVEN_OPTS="$MAVEN_OPTS -Xmx1024m -XX:MaxPermSize=512m -XX:+BytecodeVerificationLocal"' >> ~/.mavenrc
   - cat ~/.mavenrc
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then export JAVA_HOME=$(/usr/libexec/java_home); fi
+  - if [[ -f $HOME/.jdk_switcher_rc ]]; then
+      echo -e "Reload jdk_switcher from HOME"
+      travis_cmd source\ \$HOME/.jdk_switcher_rc
+    fi
+    if [[ -f /opt/jdk_switcher/jdk_switcher.sh ]]; then
+      echo -e "Reload jdk_switcher from opt"
+      travis_cmd source\ /opt/jdk_switcher/jdk_switcher.sh
+    fi
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then jdk_switcher use "$CUSTOM_JDK"; fi
 
 script:
