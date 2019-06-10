@@ -19,10 +19,10 @@ package org.apache.rocketmq.client.latency;
 
 import org.apache.rocketmq.client.impl.producer.TopicPublishInfo;
 import org.apache.rocketmq.client.log.ClientLogger;
-import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.common.message.MessageQueue;
+import org.apache.rocketmq.logging.InternalLogger;
 
-public class MQFaultStrategy {
+public class MQFaultStrategy implements SelectMessageQueueStrategy {
     private final static InternalLogger log = ClientLogger.getLog();
     private final LatencyFaultTolerance<String> latencyFaultTolerance = new LatencyFaultToleranceImpl();
 
@@ -30,6 +30,15 @@ public class MQFaultStrategy {
 
     private long[] latencyMax = {50L, 100L, 550L, 1000L, 2000L, 3000L, 15000L};
     private long[] notAvailableDuration = {0L, 0L, 30000L, 60000L, 120000L, 180000L, 600000L};
+
+    public MQFaultStrategy() {
+    }
+
+    public MQFaultStrategy(boolean sendLatencyFaultEnable, long[] latencyMax, long[] notAvailableDuration) {
+        this.sendLatencyFaultEnable = sendLatencyFaultEnable;
+        this.latencyMax = latencyMax;
+        this.notAvailableDuration = notAvailableDuration;
+    }
 
     public long[] getNotAvailableDuration() {
         return notAvailableDuration;
@@ -55,6 +64,7 @@ public class MQFaultStrategy {
         this.sendLatencyFaultEnable = sendLatencyFaultEnable;
     }
 
+    @Override
     public MessageQueue selectOneMessageQueue(final TopicPublishInfo tpInfo, final String lastBrokerName) {
         if (this.sendLatencyFaultEnable) {
             try {
@@ -92,6 +102,7 @@ public class MQFaultStrategy {
         return tpInfo.selectOneMessageQueue(lastBrokerName);
     }
 
+    @Override
     public void updateFaultItem(final String brokerName, final long currentLatency, boolean isolation) {
         if (this.sendLatencyFaultEnable) {
             long duration = computeNotAvailableDuration(isolation ? 30000 : currentLatency);

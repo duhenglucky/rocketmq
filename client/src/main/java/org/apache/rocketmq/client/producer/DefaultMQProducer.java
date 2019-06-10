@@ -25,6 +25,7 @@ import org.apache.rocketmq.client.Validators;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.impl.producer.DefaultMQProducerImpl;
+import org.apache.rocketmq.client.latency.SelectMessageQueueStrategy;
 import org.apache.rocketmq.client.log.ClientLogger;
 import org.apache.rocketmq.client.trace.AsyncTraceDispatcher;
 import org.apache.rocketmq.client.trace.TraceDispatcher;
@@ -956,4 +957,11 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
         return traceDispatcher;
     }
 
+    public SelectMessageQueueStrategy getSelectMessageQueueStrategy() {
+        return this.defaultMQProducerImpl.getSelectMessageQueueStrategy();
+    }
+
+    public void setSelectMessageQueueStrategy(SelectMessageQueueStrategy selectMessageQueueStrategy) {
+        this.defaultMQProducerImpl.setSelectMessageQueueStrategy(selectMessageQueueStrategy);
+    }
 }
